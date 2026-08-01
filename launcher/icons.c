@@ -1,37 +1,92 @@
 #include "icons.h"
 
+#include "../ui/theme.h"
+#include "../ui/draw.h"
+
 void icons_render(SDL_Renderer *renderer)
 {
     SDL_Rect icon;
 
-    /* Explorer */
+    /* ========================= */
+    /* Explorer                  */
+    /* ========================= */
 
     icon.x = 40;
     icon.y = 80;
-    icon.w = 70;
-    icon.h = 70;
+    icon.w = 72;
+    icon.h = 72;
 
-    SDL_SetRenderDrawColor(renderer, 40, 170, 255, 255);
-    SDL_RenderFillRect(renderer, &icon);
+    ui_draw_shadow(renderer, &icon);
 
-    /* Terminal */
+    ui_draw_rect(
+        renderer,
+        &icon,
+        UI_BORDER
+    );
 
-    icon.y = 190;
+    ui_draw_border(
+        renderer,
+        &icon,
+        UI_TEXT
+    );
 
-    SDL_SetRenderDrawColor(renderer, 80, 220, 120, 255);
-    SDL_RenderFillRect(renderer, &icon);
+    /* ========================= */
+    /* Terminal                  */
+    /* ========================= */
 
-    /* Settings */
+    icon.y = 180;
 
-    icon.y = 300;
+    ui_draw_shadow(renderer, &icon);
 
-    SDL_SetRenderDrawColor(renderer, 255, 180, 0, 255);
-    SDL_RenderFillRect(renderer, &icon);
+    ui_draw_rect(
+        renderer,
+        &icon,
+        UI_MAXIMIZE
+    );
 
-    /* Browser */
+    ui_draw_border(
+        renderer,
+        &icon,
+        UI_TEXT
+    );
 
-    icon.y = 410;
+    /* ========================= */
+    /* Settings                  */
+    /* ========================= */
 
-    SDL_SetRenderDrawColor(renderer, 180, 90, 255, 255);
-    SDL_RenderFillRect(renderer, &icon);
+    icon.y = 280;
+
+    ui_draw_shadow(renderer, &icon);
+
+    ui_draw_rect(
+        renderer,
+        &icon,
+        UI_MINIMIZE
+    );
+
+    ui_draw_border(
+        renderer,
+        &icon,
+        UI_TEXT
+    );
+
+    /* ========================= */
+    /* Browser                   */
+    /* ========================= */
+
+    icon.y = 380;
+
+    ui_draw_shadow(renderer, &icon);
+
+    ui_draw_rect(
+        renderer,
+        &icon,
+        UI_CLOSE
+    );
+
+    ui_draw_border(
+        renderer,
+        &icon,
+        UI_TEXT
+    );
 }

@@ -1,13 +1,23 @@
 #include "wallpaper.h"
 
+#include "../ui/theme.h"
+#include "../ui/draw.h"
+
 void wallpaper_render(SDL_Renderer *renderer)
 {
-    /* Темно-синій фон */
+    /* Background */
 
-    SDL_SetRenderDrawColor(renderer, 18, 24, 38, 255);
+    SDL_SetRenderDrawColor(
+        renderer,
+        UI_BACKGROUND.r,
+        UI_BACKGROUND.g,
+        UI_BACKGROUND.b,
+        UI_BACKGROUND.a
+    );
+
     SDL_RenderClear(renderer);
 
-    /* Верхня смуга */
+    /* Top panel */
 
     SDL_Rect top =
     {
@@ -17,12 +27,15 @@ void wallpaper_render(SDL_Renderer *renderer)
         45
     };
 
-    SDL_SetRenderDrawColor(renderer, 25, 35, 55, 255);
-    SDL_RenderFillRect(renderer, &top);
+    ui_draw_rect(
+        renderer,
+        &top,
+        UI_TOPBAR
+    );
 
-    /* Нижня смуга */
+    /* Bottom Dock */
 
-    SDL_Rect bottom =
+    SDL_Rect dock =
     {
         0,
         680,
@@ -30,6 +43,29 @@ void wallpaper_render(SDL_Renderer *renderer)
         40
     };
 
-    SDL_SetRenderDrawColor(renderer, 25, 35, 55, 255);
-    SDL_RenderFillRect(renderer, &bottom);
+    ui_draw_rect(
+        renderer,
+        &dock,
+        UI_DOCK
+    );
+
+    /* Separator line */
+
+    ui_draw_line(
+        renderer,
+        0,
+        45,
+        1280,
+        45,
+        UI_BORDER
+    );
+
+    ui_draw_line(
+        renderer,
+        0,
+        679,
+        1280,
+        679,
+        UI_BORDER
+    );
 }

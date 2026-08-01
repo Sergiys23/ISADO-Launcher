@@ -47,8 +47,8 @@ void window_manager_mouse(SDL_Event *event)
             {
                 windows[i]->dragging = 1;
 
-                windows[i]->drag_x = x - windows[i]->x;
-                windows[i]->drag_y = y - windows[i]->y;
+                windows[i]->dragOffsetX = x - windows[i]->x;
+                windows[i]->dragOffsetY = y - windows[i]->y;
 
                 return;
             }
@@ -72,8 +72,8 @@ void window_manager_mouse(SDL_Event *event)
         {
             if(windows[i]->dragging)
             {
-                windows[i]->x = x - windows[i]->drag_x;
-                windows[i]->y = y - windows[i]->drag_y;
+                windows[i]->x = x - windows[i]->dragOffsetX;
+                windows[i]->y = y - windows[i]->dragOffsetY;
             }
         }
     }

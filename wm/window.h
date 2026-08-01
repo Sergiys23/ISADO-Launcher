@@ -3,22 +3,60 @@
 
 #include <SDL2/SDL.h>
 
-typedef struct
+typedef struct Window
 {
     char title[64];
+
+    /* Position */
 
     int x;
     int y;
 
+    /* Size */
+
     int width;
     int height;
 
+    /* Visibility */
+
     int visible;
+
+    /* Focus */
+
+    int focused;
+
+    /* Window state */
+
+    int minimized;
+
+    int maximized;
+
+    /* Drag */
 
     int dragging;
 
-    int drag_x;
-    int drag_y;
+    int dragOffsetX;
+
+    int dragOffsetY;
+
+    /* Resize */
+
+    int resizing;
+
+    int resizeEdge;
+
+    /* Draw callback */
+
+    void (*draw)(
+        struct Window *window,
+        SDL_Renderer *renderer
+    );
+
+    /* Update callback */
+
+    void (*update)(
+        struct Window *window
+    );
 
 } Window;
 
@@ -38,14 +76,14 @@ void window_draw(
 
 int window_title_clicked(
     Window *window,
-    int mouse_x,
-    int mouse_y
+    int mouseX,
+    int mouseY
 );
 
 int window_close_clicked(
     Window *window,
-    int mouse_x,
-    int mouse_y
+    int mouseX,
+    int mouseY
 );
 
 #endif

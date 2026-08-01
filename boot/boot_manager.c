@@ -11,6 +11,7 @@
 #include "../core/core.h"
 #include "../shell/shell.h"
 #include "../gui/gui.h"
+#include "../process/process.h"
 
 void boot_step(const char *text)
 {
@@ -25,36 +26,53 @@ int main(void)
     setlocale(LC_ALL, ".UTF-8");
 #endif
 
-    printf("==============================\n");
-    printf("      %s\n", SYSTEM_NAME);
-    printf("      Version %s\n", ISADO_VERSION);
-    printf("==============================\n");
+    printf("=====================================\n");
+    printf("           %s\n", SYSTEM_NAME);
+    printf("         Version %s\n", ISADO_VERSION);
+    printf("=====================================\n\n");
 
     boot_step("Hardware check");
-    boot_step("Loading modules");
+    boot_step("Loading kernel");
 
     kernel_init();
 
+    boot_step("Loading core");
+
     core_init();
 
-    boot_step("Starting services");
+    boot_step("Starting Process Manager");
 
-    shell_init();
+    process_init();
 
-    boot_step("Launching GUI");
-
-    if (gui_init())
     {
-        printf("\nGUI STARTED\n");
+        printf("[BOOT] Notepad started successfully.\n");
     }
     else
     {
-        printf("\nGUI ERROR\n");
+        printf("[BOOT] Failed to start Notepad.\n");
     }
+
+    boot_step("Starting shell");
+
+    shell_init();
+    #include "../system/ai/assistant.h"
+
+    boot_step("Launching GUI");
+
+    if(gui_init())
+    {
+        printf("[BOOT] GUI started successfully.\n");
+    }
+    else
+    {
+        printf("[BOOT] GUI failed to start.\n");
+    }
+
+    process_shutdown();
 
     gui_shutdown();
 
-    printf("\nISADO SYSTEM HALTED\n");
+    printf("\nISADO shutdown complete.\n");
 
     return 0;
 }

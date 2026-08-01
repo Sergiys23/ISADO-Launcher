@@ -8,41 +8,74 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 
+add_definitions(-DSDL_MAIN_HANDLED)
+
 include_directories(
     boot
-    core
     kernel
+    core
+    logger
     shell
+    system
+    ui
     gui
-    graphics
     launcher
     wm
-    apps
-    apps/browser
-    apps/explorer
-    apps/settings
-    apps/terminal
+    process
+
     ${SDL2_INCLUDE_DIRS}
 )
 
 link_directories(${SDL2_LIBRARY_DIRS})
 
-add_definitions(-DSDL_MAIN_HANDLED)
+add_executable(isado
 
-file(GLOB_RECURSE SOURCES
-    boot/*.c
-    core/*.c
-    kernel/*.c
-    shell/*.c
-    gui/*.c
-    graphics/*.c
-    launcher/*.c
-    wm/*.c
-    apps/*.c
+    # Boot
+    boot/boot_manager.c
+
+    # Kernel
+    kernel/kernel.c
+
+    # Core
+    core/core.c
+    core/config.c
+
+    # Logger
+    logger/logger.c
+
+    # Shell
+    shell/isado_shell.c
+    shell/parser.c
+    shell/commands.c
+
+    # System
+    system/system.c
+
+    # Process
+    process/process.c
+
+    # GUI
+    gui/gui.c
+    gui/main_window.c
+    gui/mouse.c
+    gui/keyboard.c
+    
+    # UI
+    ui/theme.c
+    ui/draw.c
+    
+    # Launcher
+    launcher/desktop.c
+    launcher/wallpaper.c
+    launcher/icons.c
+    launcher/dock.c
+    
+    # Window Manager
+    wm/window.c
+    wm/window_manager.c
 )
 
-add_executable(isado ${SOURCES})
-
-target_link_libraries(isado
+target_link_libraries(
+    isado
     ${SDL2_LIBRARIES}
 )
