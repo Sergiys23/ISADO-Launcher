@@ -1,0 +1,19 @@
+#include "color.h"
+
+Color COLOR_BACKGROUND = {12,18,28,255};
+
+Color COLOR_PANEL = {30,38,55,255};
+
+Color COLOR_BORDER = {0,180,255,255};
+
+Color COLOR_BLUE = {0,170,255,255};
+
+Color COLOR_GREEN = {80,220,120,255};
+
+Color COLOR_ORANGE = {255,180,0,255};
+
+Color COLOR_PURPLE = {170,90,255,255};
+
+Color COLOR_RED = {220,70,70,255};
+
+Color COLOR_WHITE = {255,255,255,255};
