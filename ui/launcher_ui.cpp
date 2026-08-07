@@ -1,32 +1,11 @@
+#include "launcher_ui.h"
 #include <iostream>
 
-
-class ISADO_UI
+void launcher_ui_start()
 {
+    std::cout << "====================\n";
+    std::cout << " ISADO LAUNCHER\n";
+    std::cout << "====================\n";
 
-public:
-
-void start()
-{
-
-std::cout << "====================\n";
-std::cout << " ISADO LAUNCHER\n";
-std::cout << "====================\n";
-
-std::cout << "Neon Interface Loaded\n";
-
-}
-
-};
-
-
-int main()
-{
-
-ISADO_UI ui;
-
-ui.start();
-
-return 0;
-
+    std::cout << "Neon Interface Loaded\n";
 }

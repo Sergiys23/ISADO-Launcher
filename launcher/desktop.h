@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-void desktop_init(void);
+void desktop_init(SDL_Renderer *renderer);
 
 void desktop_render(SDL_Renderer *renderer);
 

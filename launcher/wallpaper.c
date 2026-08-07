@@ -1,71 +1,47 @@
 #include "wallpaper.h"
 
-#include "../ui/theme.h"
-#include "../ui/draw.h"
+#include <SDL2/SDL_image.h>
+#include <stdio.h>
+
+static SDL_Texture *wallpaper = NULL;
+
+int wallpaper_init(SDL_Renderer *renderer)
+{
+    SDL_Surface *surface =
+        IMG_Load("assets/wallpapers/desktop.png");
+
+    if(surface == NULL)
+    {
+        printf("Wallpaper error: %s\n", IMG_GetError());
+        return 0;
+    }
+
+    wallpaper = SDL_CreateTextureFromSurface(renderer, surface);
+
+    SDL_FreeSurface(surface);
+
+    if(wallpaper == NULL)
+    {
+        printf("Texture error: %s\n", SDL_GetError());
+        return 0;
+    }
+
+    return 1;
+}
 
 void wallpaper_render(SDL_Renderer *renderer)
 {
-    /* Background */
+    if(wallpaper == NULL)
+        return;
 
-    SDL_SetRenderDrawColor(
-        renderer,
-        UI_BACKGROUND.r,
-        UI_BACKGROUND.g,
-        UI_BACKGROUND.b,
-        UI_BACKGROUND.a
-    );
+    SDL_RenderCopy(renderer, wallpaper, NULL, NULL);
+}
 
-    SDL_RenderClear(renderer);
-
-    /* Top panel */
-
-    SDL_Rect top =
+void wallpaper_destroy(void)
+{
+    if(wallpaper != NULL)
     {
-        0,
-        0,
-        1280,
-        45
-    };
-
-    ui_draw_rect(
-        renderer,
-        &top,
-        UI_TOPBAR
-    );
-
-    /* Bottom Dock */
-
-    SDL_Rect dock =
-    {
-        0,
-        680,
-        1280,
-        40
-    };
-
-    ui_draw_rect(
-        renderer,
-        &dock,
-        UI_DOCK
-    );
-
-    /* Separator line */
-
-    ui_draw_line(
-        renderer,
-        0,
-        45,
-        1280,
-        45,
-        UI_BORDER
-    );
-
-    ui_draw_line(
-        renderer,
-        0,
-        679,
-        1280,
-        679,
-        UI_BORDER
-    );
+        SDL_DestroyTexture(wallpaper);
+        wallpaper = NULL;
+    }
 }

@@ -1,10 +1,12 @@
 #ifndef GUI_H
 #define GUI_H
 
-/* Ініціалізація графічного інтерфейсу */
-int gui_init(void);
+#include <stdbool.h>
 
-/* Завершення роботи GUI */
+bool gui_init(void);
+
+void gui_render(void);
+
 void gui_shutdown(void);
 
 #endif

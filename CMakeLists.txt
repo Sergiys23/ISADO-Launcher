@@ -1,81 +1,183 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(ISADO C)
+project(ISADO LANGUAGES C CXX)
+
+# =====================================================
+# Standards
+# =====================================================
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# =====================================================
+# SDL
+# =====================================================
+
 find_package(PkgConfig REQUIRED)
+
 pkg_check_modules(SDL2 REQUIRED sdl2)
+pkg_check_modules(SDL2IMAGE REQUIRED SDL2_image)
+pkg_check_modules(SDL2TTF REQUIRED SDL2_ttf)
 
 add_definitions(-DSDL_MAIN_HANDLED)
 
-include_directories(
-    boot
-    kernel
-    core
-    logger
-    shell
-    system
-    ui
-    gui
-    launcher
-    wm
-    process
+# =====================================================
+# Source files
+# =====================================================
 
-    ${SDL2_INCLUDE_DIRS}
+file(GLOB_RECURSE ISADO_C_SOURCES
+    CONFIGURE_DEPENDS
+    "${PROJECT_SOURCE_DIR}/*.c"
 )
 
-link_directories(${SDL2_LIBRARY_DIRS})
+file(GLOB_RECURSE ISADO_CPP_SOURCES
+    CONFIGURE_DEPENDS
+    "${PROJECT_SOURCE_DIR}/*.cpp"
+)
+
+# =====================================================
+# Remove build directories
+# =====================================================
+
+foreach(dir
+    "/build/"
+    "/build-gcc/"
+    "/cmake-build-debug/"
+    "/cmake-build-release/"
+)
+
+list(FILTER ISADO_C_SOURCES
+    EXCLUDE REGEX ".*${dir}.*"
+)
+
+list(FILTER ISADO_CPP_SOURCES
+    EXCLUDE REGEX ".*${dir}.*"
+)
+
+endforeach()
+
+# =====================================================
+# Remove tests
+# =====================================================
+
+list(FILTER ISADO_C_SOURCES
+    EXCLUDE REGEX ".*/tests/.*"
+)
+
+list(FILTER ISADO_CPP_SOURCES
+    EXCLUDE REGEX ".*/tests/.*"
+)
+
+# =====================================================
+# Executable
+# =====================================================
 
 add_executable(isado
-
-    # Boot
-    boot/boot_manager.c
-
-    # Kernel
-    kernel/kernel.c
-
-    # Core
-    core/core.c
-    core/config.c
-
-    # Logger
-    logger/logger.c
-
-    # Shell
-    shell/isado_shell.c
-    shell/parser.c
-    shell/commands.c
-
-    # System
-    system/system.c
-
-    # Process
-    process/process.c
-
-    # GUI
-    gui/gui.c
-    gui/main_window.c
-    gui/mouse.c
-    gui/keyboard.c
-    
-    # UI
-    ui/theme.c
-    ui/draw.c
-    
-    # Launcher
-    launcher/desktop.c
-    launcher/wallpaper.c
-    launcher/icons.c
-    launcher/dock.c
-    
-    # Window Manager
-    wm/window.c
-    wm/window_manager.c
+    ${ISADO_C_SOURCES}
+    ${ISADO_CPP_SOURCES}
 )
 
-target_link_libraries(
-    isado
+# =====================================================
+# Include directories
+# =====================================================
+
+target_include_directories(isado PRIVATE
+
+    .
+
+    boot
+    core
+    kernel
+    logger
+    shell
+
+    system
+    system/ai
+    system/internet
+    system/phone
+
+    process
+
+    gui
+    ui
+    launcher
+    wm
+
+    graphics
+    filesystem
+    sdk
+    apps
+    assets
+
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2IMAGE_INCLUDE_DIRS}
+    ${SDL2TTF_INCLUDE_DIRS}
+)
+
+# =====================================================
+# Link directories
+# =====================================================
+
+target_link_directories(isado PRIVATE
+
+    ${SDL2_LIBRARY_DIRS}
+    ${SDL2IMAGE_LIBRARY_DIRS}
+    ${SDL2TTF_LIBRARY_DIRS}
+
+)
+
+# =====================================================
+# Libraries
+# =====================================================
+
+target_link_libraries(isado PRIVATE
+
     ${SDL2_LIBRARIES}
+    ${SDL2IMAGE_LIBRARIES}
+    ${SDL2TTF_LIBRARIES}
+
 )
+
+# =====================================================
+# Compiler options
+# =====================================================
+
+if(MSVC)
+
+    target_compile_options(isado PRIVATE
+        /W4
+    )
+
+else()
+
+    target_compile_options(isado PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+    )
+
+endif()
+
+# =====================================================
+# Output directory
+# =====================================================
+
+set_target_properties(isado PROPERTIES
+
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+
+)
+
+# =====================================================
+# Messages
+# =====================================================
+
+message(STATUS "---------------------------------------")
+message(STATUS "ISADO OS Build")
+message(STATUS "C Sources   : ${ISADO_C_SOURCES}")
+message(STATUS "C++ Sources : ${ISADO_CPP_SOURCES}")
+message(STATUS "SDL2        : ${SDL2_VERSION}")
+message(STATUS "---------------------------------------")
