@@ -1,34 +1,64 @@
-# Gradle files
-.gradle/
+# ==========================================
+# Build directories
+# ==========================================
 build/
+build-gcc/
+build-msvc/
+out/
 
-# Local configuration file (sdk path, etc)
-local.properties
+# ==========================================
+# CMake
+# ==========================================
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+build.ninja
+compile_commands.json
 
-# Log/OS Files
+# ==========================================
+# Ninja
+# ==========================================
+.ninja_deps
+.ninja_log
+
+# ==========================================
+# Object files
+# ==========================================
+*.obj
+*.o
+*.a
+*.lib
+*.dll
+
+# ==========================================
+# Executables
+# ==========================================
+*.exe
+
+# ==========================================
+# Visual Studio
+# ==========================================
+.vs/
+
+# ==========================================
+# Visual Studio Code
+# ==========================================
+.vscode/
+
+# ==========================================
+# CLion
+# ==========================================
+.idea/
+cmake-build-*/
+
+# ==========================================
+# Logs
+# ==========================================
 *.log
 
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.aab
-*.apk
-output-metadata.json
-
-# IntelliJ
-*.iml
-.idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
-
-# Keystore files
-*.jks
-*.keystore
-
-# Google Services (e.g. APIs or Firebase)
-google-services.json
-
-# Android Profiling
-*.hprof
+# ==========================================
+# Temporary files
+# ==========================================
+*.tmp
+*.bak
+*.swp
